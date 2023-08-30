@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: power-plant-deployment
+  labels:
+    app: power-plant
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: power-plant
+  template:
+    metadata:
+      labels:
+        app: power-plant
+    spec:
+      containers:
+        - name: power-plant
+          image: power-plant-image:tag
+          ports:
+            - containerPort: 8080
