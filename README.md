@@ -79,10 +79,6 @@ GET API - /api/v1/battery-info?startPostcode=1&endPostcode=5&minWattCapacity&max
 /autuator/**
 
 
-#Run app using docker
-
-docker-compose up -d
-
 #Configuration
 
 application.properties

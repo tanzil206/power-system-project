@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+  h2db:
+    image: "jesperdj/h2:latest" # Use the H2 database Docker image
+    ports:
+      - "8082:8082" # Map host port to container port
+    volumes:
+      - ./data:/opt/h2-data # Mount a local directory to store the database files
+    environment:
+      - H2_OPTIONS=-ifNotExists # Add command to initialize the database if it doesn't exist
   api:
     container_name: power-system
     image: power-system-img
@@ -9,5 +17,7 @@ services:
       dockerfile: Dockerfile
     ports:
        - "8080:8080"
+    depends_on:
+       - h2db
     restart: always   
 
