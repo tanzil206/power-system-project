@@ -9,13 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.application.service.BatteryService;
+import com.example.application.factory.service.BatteryService;
 import com.example.application.model.Battery;
 import com.example.application.repository.BatteryRepository;
 
@@ -36,8 +35,7 @@ public class BatteryInfoController {
 
     
     @GetMapping
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public ResponseEntity<Map<String, Object>> getBatteriesInPostcodeRange(
+    public ResponseEntity<Map<String, Object>> getBatteriesInPostcodeRange(@RequestHeader("X-API-Version") int version,
             @RequestParam String startPostcode,
             @RequestParam String endPostcode,
             @RequestParam(required = false) Double minWattCapacity,

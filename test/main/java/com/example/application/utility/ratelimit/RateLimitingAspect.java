@@ -13,7 +13,7 @@ import com.google.common.util.concurrent.RateLimiter;
 @Component
 public class RateLimitingAspect {
 
-	@Autowired(required = false) 
+    @Autowired
     private RateLimiter rateLimiter;
 
     @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
