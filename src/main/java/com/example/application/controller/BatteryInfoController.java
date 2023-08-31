@@ -19,7 +19,6 @@ import com.example.application.service.BatteryService;
 import com.example.application.model.Battery;
 import com.example.application.repository.BatteryRepository;
 
-
 /**
  * Created by Tanzil.
  */
@@ -28,23 +27,23 @@ import com.example.application.repository.BatteryRepository;
 public class BatteryInfoController {
 
 	private final Logger logger = LoggerFactory.getLogger(BatteryInfoController.class);
-	
-    @Autowired
-    private BatteryRepository batteryRepository;
-    @Autowired
-    private BatteryService batteryService;
 
-    
-    @GetMapping
+	@Autowired
+	private BatteryRepository batteryRepository;
+	@Autowired
+	private BatteryService batteryService;
+
+	@GetMapping
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public ResponseEntity<Map<String, Object>> getBatteriesInPostcodeRange(
+    public ResponseEntity<Object> getBatteriesInPostcodeRange(
             @RequestParam String startPostcode,
             @RequestParam String endPostcode,
             @RequestParam(required = false) Double minWattCapacity,
             @RequestParam(required = false) Double maxWattCapacity) {
 
         List<Battery> batteriesInRange;
-
+        Map<String, Object> response = new HashMap<>();
+try {
         if (minWattCapacity != null && maxWattCapacity != null) {
             batteriesInRange = batteryService.getPostcodeBetweenWattCapacity(
                     startPostcode, endPostcode, minWattCapacity, maxWattCapacity);
@@ -63,13 +62,17 @@ public class BatteryInfoController {
 
         List<String> batteryNames = batteriesInRange.stream().map(Battery::getName).sorted().collect(Collectors.toList());
 
-        Map<String, Object> response = new HashMap<>();
         response.put("batteryNames", batteryNames);
         response.put("totalWattCapacity", totalWattCapacity);
         response.put("averageWattCapacity", averageWattCapacity);
-
-        return ResponseEntity.ok(response);
+		return ResponseEntity.ok(response);
+}
+catch(Exception ex) {
+	
+	logger.error("Error Message :" +ex.getMessage());
+	 return ResponseEntity.ok(response.put("Message :", ex.getMessage()));
+}
+       
     }
 
 }
-

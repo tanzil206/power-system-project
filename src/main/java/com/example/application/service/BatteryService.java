@@ -16,7 +16,6 @@ public class BatteryService {
     @Autowired
     private BatteryRepository batteryRepository;
 
-    @CachePut(value="battery", key="#watt_capacity")
     public List<Battery> getPostcodeBetweenWattCapacity(String startPostcode,String endPostcode,Double minWattCapacity,Double maxWattCapacity) {
         return batteryRepository.findByPostcodeBetweenAndWattCapacityBetween(
                 startPostcode, endPostcode, minWattCapacity, maxWattCapacity);
